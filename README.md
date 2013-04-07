@@ -1,9 +1,15 @@
 ## Twitter archive import
 
 * Place your downloaded json archive files (data/js/tweets/[year]\_[month].js) directly in the archive folder (archive/[year]\_[month].js)
-* On new tweet nest setups:
+
+* Check if the following files are writeable:
+	- inc/config.php
+	- maintenance/loadarchivelog.txt
+
+* On new Tweet Nest setups:
 	- follow the tweet nest instructions from http://pongsocket.com/tweetnest/#installation 
 	- right after the maintenance/loaduser.php step, run maintenance/loadarchive.php
+	
 * On existing instances:
 	- be sure not to overwrite your inc/config.php or you will have to setup your instance again
 	- run upgrade.php
