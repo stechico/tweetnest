@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Tweetnest : A browsable, searchable and easily customizable  archive and backup for your tweets" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Tweetnest</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/stechico/tweetnest">View on GitHub</a>
+
+          <h1 id="project_title">Tweetnest</h1>
+          <h2 id="project_tagline">A browsable, searchable and easily customizable  archive and backup for your tweets</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/stechico/tweetnest/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/stechico/tweetnest/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <p>This is a fork from Andy Graulund's Tweet Nest. Now, updated with the ability to import your Twitter Archive.</p>
+
+<h2>Twitter archive import</h2>
+
+<ul>
+<li><p>Place your downloaded json archive files (data/js/tweets/[year]_[month].js) directly in the archive folder (archive/[year]_[month].js)</p></li>
+<li>
+<p>Check if the following files are writeable:</p>
+
+<ul>
+<li>inc/config.php</li>
+<li>maintenance/loadarchivelog.txt</li>
+</ul>
+</li>
+<li>
+<p>On new Tweet Nest setups:</p>
+
+<ul>
+<li>follow the tweet nest instructions from <a href="http://pongsocket.com/tweetnest/#installation">http://pongsocket.com/tweetnest/#installation</a> </li>
+<li>right after the maintenance/loaduser.php step, run maintenance/loadarchive.php</li>
+</ul>
+</li>
+<li>
+<p>On existing instances:</p>
+
+<ul>
+<li>be sure not to overwrite your inc/config.php or you will have to setup your instance again</li>
+<li>run upgrade.php</li>
+<li>run maintenance/loadarchive.php</li>
+</ul>
+</li>
+</ul><p>The importer keeps track of its progress in maintenance/loadarchivelog.txt if it's writable. Should the script die for some reason (php time limit e.g.), just run it again.</p>
+
+<p>If you have a large archive (10k+ tweets), I would recommend to do the one-time import via cli (php -f maintenance/loadarchive.php)</p>
+
+<hr><p>HI! THIS IS TWEET NEST.</p>
+
+<p>Tweet Nest is a browsable, searchable and easily customizable archive and backup for your tweets, made in PHP. It runs on a web server. It requires the following:</p>
+
+<ul>
+<li>PHP 5.2 or higher with cURL enabled (or 5.1 with the PECL JSON module installed in addition)</li>
+<li>MySQL 4.1 or higher</li>
+</ul><p>To figure out how to install it, please point your browser to:</p>
+
+<p><a href="http://pongsocket.com/tweetnest/">http://pongsocket.com/tweetnest/</a></p>
+
+<p>And go to the "Installation" section.</p>
+
+<p>Thanks!</p>
+
+<p>Andy Graulund
+pongsocket.com</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Tweetnest maintained by <a href="https://github.com/stechico">stechico</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-26880301-4");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+
+  </body>
+</html>
