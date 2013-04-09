@@ -36,35 +36,36 @@
 <h2>Twitter archive import</h2>
 
 <ul>
-<li><p>Place your downloaded json archive files (data/js/tweets/[year]_[month].js) directly in the archive folder (archive/[year]_[month].js)</p></li>
+<li><p>Place your downloaded json archive files <code>(data/js/tweets/[year]_[month].js)</code> directly in the archive folder <code>(archive/[year]_[month].js)</code></p></li>
 <li>
 <p>Check if the following files are writeable:</p>
 
 <ul>
-<li>inc/config.php</li>
-<li>maintenance/loadarchivelog.txt</li>
+<li><code>inc/config.php</code></li>
+<li><code>maintenance/loadarchivelog.txt</code></li>
 </ul>
 </li>
 <li>
 <p>On new Tweet Nest setups:</p>
 
 <ul>
-<li>follow the tweet nest instructions from <a href="http://pongsocket.com/tweetnest/#installation">http://pongsocket.com/tweetnest/#installation</a> </li>
-<li>right after the maintenance/loaduser.php step, run maintenance/loadarchive.php</li>
+<li>follow the tweet nest instructions from <tt><a href="http://pongsocket.com/tweetnest/#installation">http://pongsocket.com/tweetnest/#installation</a></tt> <ul>
+  <li><strong>right after the</strong> <code>maintenance/loaduser.php</code> <strong>step</strong>, run <code>maintenance/loadarchive.php</code> (instead of <tt>maintenance/loadtweets.php</tt>)</li>
+</ul></li>
 </ul>
 </li>
 <li>
 <p>On existing instances:</p>
 
 <ul>
-<li>be sure not to overwrite your inc/config.php or you will have to setup your instance again</li>
-<li>run upgrade.php</li>
-<li>run maintenance/loadarchive.php</li>
+<li>be sure not to overwrite your <code>inc/config.php</code> or you will have to setup your instance again</li>
+<li>run <code>upgrade.php</code></li>
+<li>run <code>maintenance/loadarchive.php</code></li>
 </ul>
 </li>
-</ul><p>The importer keeps track of its progress in maintenance/loadarchivelog.txt if it's writable. Should the script die for some reason (php time limit e.g.), just run it again.</p>
+</ul><p>The importer keeps track of its progress in <code>maintenance/loadarchivelog.txt</code> if it's writable. Should the script die for some reason (php time limit e.g.), just run it again.</p>
 
-<p>If you have a large archive (10k+ tweets), I would recommend to do the one-time import via cli (php -f maintenance/loadarchive.php)</p>
+<p>If you have a large archive (10k+ tweets), I would recommend to do the one-time import via cli (<code>php -f maintenance/loadarchive.php</code>)</p>
 
 <hr><p>HI! THIS IS TWEET NEST.</p>
 
