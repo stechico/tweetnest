@@ -237,7 +237,7 @@
 			$e = preg_match("/[A-Za-z0-9_]/", $word[strlen($word)-1]) ? "\b" : "\B";
 			$str = preg_replace(
 				"/" . $s . "(" . preg_quote(s($word), "/") . ")" . $e . "/i",
-				'<strong class="searchword">$1</strong>',
+				"<strong class=\"searchword\">$1</strong>",
 				$str
 			);
 			$str = preg_replace( '/(<[a-zA-Z]* [^>]*)<strong class="searchword">([^<]*)<\/strong>([^>]*>)/', '$1$2$3', $str);
