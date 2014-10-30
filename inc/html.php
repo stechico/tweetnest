@@ -120,7 +120,7 @@
 		if(!empty($tweet['place'])){
 			$tweetplace = unserialize(str_replace("O:16:\"SimpleXMLElement\"", "O:8:\"stdClass\"", $tweet['place']));
 		}
-		$rt = (array_key_exists("rt", $tweetextra) && !empty($tweetextra['rt']));
+		$rt = (is_array($tweetextra) && array_key_exists("rt", $tweetextra) && !empty($tweetextra['rt']));
 		$t  = str_repeat("\t", $tabs);
 		if($rt){ $retweet = $tweetextra['rt']; }
 
@@ -131,10 +131,30 @@
 		if(areEntitiesEmpty($entities)){
 			$htmlcontent = linkifyTweet($htmlcontent);
 		} else {
+			// Known issue: Entities have faulty indices when parsing a preprocessed $htmlcontent,
+			// where the preprocessing creates more characters than were there previously.
+			// For example ">" into "&gt;" and an em dash into "---".
+
 			$htmlcontent = linkifyTweet(entitifyTweet($htmlcontent, $entities), true);
 		}
+<<<<<<< HEAD
 
 		$d  =   $t . "<div id=\"tweet-" . s($tweet['tweetid']) . "\" class=\"tweet" . (($tweet['type'] == 1) ? " reply" : "") . (($tweet['type'] == 2) ? " retweet" : "") . "\">\n" .
+=======
+		
+		$inReplyToTweetId = '';
+		
+		if($tweetextra && !empty($tweetextra['in_reply_to_status_id'])){
+			if(!empty($tweetextra['in_reply_to_status_id_str'])){
+				// Always prefer str property if possible
+				$inReplyToTweetId = $tweetextra['in_reply_to_status_id_str'];
+			} else {
+				$inReplyToTweetId = $tweetextra['in_reply_to_status_id'];
+			}
+		}
+		
+		$d  =   $t . "<div id=\"tweet-" . s($tweet['tweetid']) . "\" class=\"tweet" . (($tweet['type'] == 1) ? " reply" : "") . (($tweet['type'] == 2) ? " retweet" : "") . "\">\n" . 
+>>>>>>> upstream/master
 				($tweet['favorite'] ? $t . "\t<div class=\"fav\" title=\"A personal favorite\"><span>(A personal favorite)</span></div>\n" : "") .
 				$t . "\t<p class=\"text\">" . ($rt ? "<a class=\"rt\" href=\"https://twitter.com/" . $retweet['screenname'] . "\"><strong>" . $retweet['screenname'] . "</strong></a> " : "") .
 				nl2br(p(highlightQuery(emojifyTweet(linkifyTweet(
@@ -142,9 +162,15 @@
 				)), $tweet), 3)) . "</p>\n" .
 				$t . "\t<p class=\"meta\">\n" . $t . "\t\t<a href=\"https://twitter.com/" . s($rt ? $retweet['screenname'] : $tweet['screenname']) . "/statuses/" . s($rt ? $retweet['tweetid'] : $tweet['tweetid']) . "\" class=\"permalink\">" . date("g:i A, M jS, Y", ($rt ? $retweet['time'] : $tweet['time'])) . "</a>\n" .
 				$t . "\t\t<span class=\"via\">via " . ($rt ? $retweet['source'] : $tweet['source']) . "</span>\n" .
+<<<<<<< HEAD
 				($rt ? $t . "\t\t<span class=\"rted\">(retweeted on " . date("g:i A, M jS, Y", $tweet['time']) . " <span class=\"via\">via " . $tweet['source'] . "</span>)</span>\n" : "") .
 				((!$rt && $tweetextra && @!empty($tweetextra['in_reply_to_status_id'])) ? $t . "\t\t<a class=\"replyto\" href=\"https://twitter.com/" . s($tweetextra['in_reply_to_screen_name']) . "/statuses/" . s($tweetextra['in_reply_to_status_id']) . "\">in reply to " . s($tweetextra['in_reply_to_screen_name']) . "</a>\n" : "") .
 				(($tweetplace && @$tweetplace->full_name) ? "\t\t<span class=\"place\">from <a href=\"https://maps.google.com/?q=" . urlencode($tweetplace->full_name) . "\">" . s($tweetplace->full_name) . "</a></span>" : "") .
+=======
+				($rt ? $t . "\t\t<span class=\"rted\">(retweeted on " . date("g:i A, M jS, Y", $tweet['time']) . " <span class=\"via\">via " . $tweet['source'] . "</span>)</span>\n" : "") . 
+				((!$rt && $inReplyToTweetId) ? $t . "\t\t<a class=\"replyto\" href=\"http://twitter.com/" . s($tweetextra['in_reply_to_screen_name']) . "/statuses/" . s($inReplyToTweetId) . "\">in reply to " . s($tweetextra['in_reply_to_screen_name']) . "</a>\n" : "") . 
+				(($tweetplace && @$tweetplace->full_name) ? "\t\t<span class=\"place\">from <a href=\"http://maps.google.com/?q=" . urlencode($tweetplace->full_name) . "\">" . s($tweetplace->full_name) . "</a></span>" : "") .
+>>>>>>> upstream/master
 				$t . "\t</p>\n" . $t . "</div>\n";
 		$dd = hook("displayTweet", array($d, $tweet));
 		if(!empty($dd)){ $d = $dd[0]; }
@@ -352,6 +378,7 @@
 	}
 
 	// Internal functions -------------------------------
+<<<<<<< HEAD
 
 	function _linkifyTweet_link($a, $b, $c, $d){
 		$url = stripslashes($a);
@@ -363,6 +390,19 @@
 	}
 	function _linkifyTweet_hashtag($a, $b){
 		return "<a class=\"hashtag\" href=\"https://twitter.com/search?q=%23" . $a . "\">#" . $a . "</a>";
+=======
+	
+	function _linkifyTweet_link($m){
+		$url = stripslashes($m[1]);
+		$end = stripslashes($m[4]);
+		return "<a class=\"link\" href=\"" . ($m[2][0] == "w" ? "http://" : "") . str_replace("\"", "&quot;", $url) . "\">" . (strlen($url) > 25 ? substr($url, 0, 24) . "..." : $url) . "</a>" . $end;
+	}
+	function _linkifyTweet_at($m){
+		return "<span class=\"at\">@</span><a class=\"user\" href=\"http://twitter.com/" . $m[1] . "\">" . $m[1] . "</a>";
+	}
+	function _linkifyTweet_hashtag($m){
+		return "<a class=\"hashtag\" href=\"http://twitter.com/search?q=%23" . $m[1] . "\">#" . $m[1] . "</a>";
+>>>>>>> upstream/master
 	}
 	function linkifyTweet($str, $linksOnly = false){
 		// Look behind (it kinda sucks, no | operator)
@@ -371,10 +411,22 @@
 				'(?<!title=\"http:\/\/)(?<!title=\"https:\/\/)' .
 				'(?<!data-image=\")(?<!data-image=\"http:\/\/)(?<!data-image=\"https:\/\/)';
 		// Expression
-		$html = preg_replace("/$lookbehind\b(((https?:\/\/)|www\.).+?)(([!?,.\"\)]+)?(\s|$))/e", "_linkifyTweet_link('$1', '$2', '$3', '$4')", $str);
+		$html = preg_replace_callback(
+			"/$lookbehind\b(((https?:\/\/)|www\.).+?)(([!?,.\"\)]+)?(\s|$))/",
+			'_linkifyTweet_link',
+			$str
+		);
 		if(!$linksOnly){
-			$html = preg_replace("/\B\@([a-zA-Z0-9_]{1,20}(\/\w+)?)/e", "_linkifyTweet_at('$1', '$2')", $html);
-			$html = preg_replace("/\B\#([\pL|0-9|_]+)/eu", "_linkifyTweet_hashtag('$1', '$2')", $html);
+			$html = preg_replace_callback(
+				"/\B\@([a-zA-Z0-9_]{1,20}(\/\w+)?)/",
+				'_linkifyTweet_at',
+				$html
+			);
+			$html = preg_replace_callback(
+				"/\B\#([\pL|0-9|_]+)/u",
+				'_linkifyTweet_hashtag',
+				$html
+			);
 		}
 		return $html;
 	}
@@ -428,15 +480,33 @@
 		$out = '';
 		$lastEntityEnded = 0;
 
+<<<<<<< HEAD
 		ksort($replacements);
 
+=======
+		// Sort the entity replacements by start index
+		ksort($replacements);
+
+		// Loop through all entities
+>>>>>>> upstream/master
 		foreach($replacements as $position => $replacement){
+
+			// Insert the content between this entity and the previous one
 			$out .= mb_substr($str, $lastEntityEnded, $position - $lastEntityEnded);
+
+			// Insert the entity content
 			$out .= $replacement['content'];
+
+			// Update the position of the last entity end
 			$lastEntityEnded = $replacement['end'];
 		}
 
+<<<<<<< HEAD
+=======
+		// Insert the remaining content
+>>>>>>> upstream/master
 		$out .= mb_substr($str, $lastEntityEnded);
+
 		return $out;
 	}
 
